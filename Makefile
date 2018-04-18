@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/04/17 14:35:26 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/04/18 21:22:44 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -17,10 +17,7 @@ INCLUDE		=	-I./inc/ -I./libft/
 SUB_MAKE	=	./libft/
 SUB_OBJ		=	libftprintf.a
 INC_LIB		=	-L./libft -lftprintf -ltermcap
-SRC			=	minishell.c builtins.c env_builtin.c env_utils.c exec.c error.c	\
-				cmd_parser.c ft_buffer.c msh_splitsemicolon.c ft_cd.c			\
-				msh_splitwhitespaces.c quote_helper.c line_parser.c cmdline.c	\
-				ft_readline.c
+SRC			=	ft_select.c slist_op.c
 HDR			=	inc/ft_select.h
 LIBFT		=	libft/libftprintf.a
 OBJ			=	$(addprefix $(DIROBJ), $(SRC:.c=.o))
