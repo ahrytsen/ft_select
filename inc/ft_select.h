@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 18:28:54 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/18 21:22:22 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/04/19 18:57:02 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,19 @@ typedef struct	s_select
 	struct s_select	*prev;
 }				t_select;
 
-void	slist_add(t_select **head, char *value);
-void	slist_del(t_select **elem);
+typedef struct	s_term
+{
+	char	*cl_string;
+	char	*cm_string;
+	int		height;
+	int		width;
+	int		auto_wrap;
+	char	PC;
+	char	*BC;
+	char	*UP;
+}				t_term;
+
+void			slist_add(t_select **head, char *value);
+void			slist_del(t_select **elem);
 
 #endif

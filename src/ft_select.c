@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 15:35:28 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/18 21:23:17 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/04/19 18:58:42 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,37 @@ static void	init_terminal_data(void)
 		ft_fatal("Terminal type `%s' is not defined.\n", termtype);
 }
 
-/*static void	ft_init(void)
+static void	interrogate_terminal ()
 {
-	int			shlvl;
-	char		*tmp;
+  char *temp;
 
-	shlvl = tmp ? ft_atoi(tmp) : 0;
-	tmp = ft_itoa(shlvl + 1);
-	ft_setenv("SHLVL", tmp, 1);
-	free(tmp);
-	ft_setenv("PATH", "/usr/bin:/bin", 0);
+  cl_string = tgetstr ("cl", NULL);
+  cm_string = tgetstr ("cm", NULL);
+  auto_wrap = tgetflag ("am");
+  height = tgetnum ("li");
+  width = tgetnum ("co");
+  temp = tgetstr ("pc", NULL);
+  PC = temp ? *temp : 0;
+  BC = tgetstr ("le", NULL);
+  UP = tgetstr ("up", NULL);
+}
+
+static void	ft_init(int sig)
+{
+	static struct termios	savetty;
+	static struct termios	tty;
+	tcgetattr(0, &tty);
+	savetty = tty;
+	tty.c_lflag &= ~(ICANON | ECHO);
+	tty.c_cc[VMIN] = 1;
+	tcsetattr(0, TCSAFLUSH, &tty);
+
 	signal(SIGINT, sig_handler);
 	signal(SIGWINCH, SIG_IGN);
 	signal(SIGINFO, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
-	}*/
+	}
 
 int		main(int ac, char **av)
 {
@@ -58,5 +73,4 @@ int		main(int ac, char **av)
 		ft_printf("value: %s; id = %u\n", slist->value, slist->id);
 		slist = slist->next;
 	}
-
 }
