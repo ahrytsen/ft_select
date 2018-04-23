@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 18:05:23 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/18 21:23:58 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/04/23 20:08:18 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	slist_add(t_select **head, char *value)
 	if (!(new = (t_select*)ft_memalloc(sizeof(t_select))))
 		ft_fatal("ft_select: malloc error\n");
 	new->value = value;
-	if(!*head)
+	if (!*head)
 		*head = new;
 	else
 	{
@@ -36,7 +36,7 @@ void	slist_del(t_select **elem)
 	t_select	*next;
 	t_select	*prev;
 
-	if(!*elem)
+	if (!*elem)
 		return ;
 	next = (*elem)->next;
 	prev = (*elem)->prev;

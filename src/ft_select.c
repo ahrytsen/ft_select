@@ -6,71 +6,61 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 15:35:28 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/19 18:58:42 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/04/23 21:07:20 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_select.h>
 
-static void	init_terminal_data(void)
+int		check_size(t_term *env)
 {
-	char	*termtype;
-	int 	success;
+	t_select	*slist;
+	int			i;
+	int			tmp;
+	int			max_width;
+	int			width;
 
-	if (!(termtype = getenv("TERM")))
-		ft_fatal("Specify a terminal type with `setenv TERM <yourtype>'.\n");
-	success = tgetent(NULL, termtype);
-	if (success < 0)
-		ft_fatal("Could not access the termcap data base.\n");
-	else if(!success)
-		ft_fatal("Terminal type `%s' is not defined.\n", termtype);
-}
-
-static void	interrogate_terminal ()
-{
-  char *temp;
-
-  cl_string = tgetstr ("cl", NULL);
-  cm_string = tgetstr ("cm", NULL);
-  auto_wrap = tgetflag ("am");
-  height = tgetnum ("li");
-  width = tgetnum ("co");
-  temp = tgetstr ("pc", NULL);
-  PC = temp ? *temp : 0;
-  BC = tgetstr ("le", NULL);
-  UP = tgetstr ("up", NULL);
-}
-
-static void	ft_init(int sig)
-{
-	static struct termios	savetty;
-	static struct termios	tty;
-	tcgetattr(0, &tty);
-	savetty = tty;
-	tty.c_lflag &= ~(ICANON | ECHO);
-	tty.c_cc[VMIN] = 1;
-	tcsetattr(0, TCSAFLUSH, &tty);
-
-	signal(SIGINT, sig_handler);
-	signal(SIGWINCH, SIG_IGN);
-	signal(SIGINFO, SIG_IGN);
-	signal(SIGTSTP, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
+	i = 0;
+	tmp = 0;
+	width = 0;
+	max_width = 0;
+	slist = env->slist;
+	while (slist)
+	{
+		if (++i == env->height)
+		{
+			i = 0;
+			width += max_width + 3;
+			max_width = 0;
+		}
+		tmp = ft_strlen(slist->value);
+		tmp > max_width ? max_width = tmp : 0;
+		slist = slist->next;
 	}
+	ft_printf("width: %d\n", env->height);
+	if (width >= env->width)
+		return (0);
+	return (1);
+}
 
 int		main(int ac, char **av)
 {
 	int			i;
-	t_select	*slist;
+	t_term		env;
 
 	i = 1;
-	slist = NULL;
-	init_terminal_data();
+	ft_bzero(&env, sizeof(t_term));
+	ft_init_terminal(1);
+	ft_init_termcap(&env);
+	tputs(env.cl_string, 1, (int (*)(int))&ft_putchar);
+	check_size(&env);
 	while (i < ac)
-		slist_add(&slist, av[i++]);
-	while (slist)
+		slist_add(&env.slist, av[i++]);
+	while (env.slist)
 	{
-		ft_printf("value: %s; id = %u\n", slist->value, slist->id);
-		slist = slist->next;
+		ft_printf("value: %s; id = %u\n", env.slist->value, env.slist->id);
+		env.slist = env.slist->next;
 	}
+	sleep(5);
+	ft_init_terminal(0);
 }

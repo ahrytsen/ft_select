@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 18:28:54 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/19 18:57:02 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/04/23 19:00:01 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,21 @@ typedef struct	s_select
 
 typedef struct	s_term
 {
-	char	*cl_string;
-	char	*cm_string;
-	int		height;
-	int		width;
-	int		auto_wrap;
-	char	PC;
-	char	*BC;
-	char	*UP;
+	t_select	*slist;
+	char		*cl_string;
+	char		*cm_string;
+	int			height;
+	int			width;
+	int			auto_wrap;
+	char		PC;
+	char		*BC;
+	char		*UP;
 }				t_term;
 
 void			slist_add(t_select **head, char *value);
 void			slist_del(t_select **elem);
+void			ft_init_signal(void);
+void			ft_init_termcap(t_term *env);
+void			ft_init_terminal(int mod);
 
 #endif
