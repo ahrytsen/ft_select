@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/04/23 18:57:09 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/04/24 19:23:43 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -17,7 +17,7 @@ INCLUDE		=	-I./inc/ -I./libft/
 SUB_MAKE	=	./libft/
 SUB_OBJ		=	libftprintf.a
 INC_LIB		=	-L./libft -lftprintf -ltermcap
-SRC			=	ft_select.c slist_op.c ft_init.c
+SRC			=	ft_select.c slist_op.c ft_init.c ft_print_list.c
 HDR			=	inc/ft_select.h
 LIBFT		=	libft/libftprintf.a
 OBJ			=	$(addprefix $(DIROBJ), $(SRC:.c=.o))
@@ -41,7 +41,7 @@ all		:		lib $(NAME)
 
 $(NAME)	:		$(DIROBJ) $(OBJ) $(LIBFT)
 				@$(CC) $(INCLUDE) $(INC_LIB) $(CFLAGS) -O3 -o $(NAME) $(OBJ)
-				@$(ECHO) "\033[31m> \033[32mminishell: Compiled\033[0m"
+				@$(ECHO) "\033[31m> \033[32m"$(NAME)": Compiled\033[0m"
 
 lib		:
 				@$(MAKE) -C $(SUB_MAKE) -j3

@@ -6,61 +6,47 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 15:35:28 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/23 21:07:20 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/04/24 21:20:39 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_select.h>
 
-int		check_size(t_term *env)
-{
-	t_select	*slist;
-	int			i;
-	int			tmp;
-	int			max_width;
-	int			width;
+t_term	g_term;
 
-	i = 0;
-	tmp = 0;
-	width = 0;
-	max_width = 0;
-	slist = env->slist;
-	while (slist)
+void	main_loop(t_select *head)
+{
+	t_select	*cur;
+	uint64_t	buf;
+
+	cur = head;
+	while (!(buf = 0) && read(0, &buf, 8) > 0 && buf != K_RET)
 	{
-		if (++i == env->height)
+		if (buf == K_SPC )
 		{
-			i = 0;
-			width += max_width + 3;
-			max_width = 0;
+			cur->is_slctd = !cur->is_slctd;
+			cur = cur->next;
 		}
-		tmp = ft_strlen(slist->value);
-		tmp > max_width ? max_width = tmp : 0;
-		slist = slist->next;
+		else if (buf == K_BS || buf == K_DEL)
+			slist_del(&cur);
+		else if (buf == K_UP || buf == K_DOWN
+				|| buf == K_LEFT || buf == K_RIGHT)
+			ft_move(buf, &cur);
+		else
+			continue ;
+		ft_print_list(head);
 	}
-	ft_printf("width: %d\n", env->height);
-	if (width >= env->width)
-		return (0);
-	return (1);
 }
 
 int		main(int ac, char **av)
 {
-	int			i;
-	t_term		env;
+	t_select	*slist;
 
-	i = 1;
-	ft_bzero(&env, sizeof(t_term));
+	if (!(slist = ft_init_slist(ac, av)))
+		return (1);
+	ft_init_termcap();
 	ft_init_terminal(1);
-	ft_init_termcap(&env);
-	tputs(env.cl_string, 1, (int (*)(int))&ft_putchar);
-	check_size(&env);
-	while (i < ac)
-		slist_add(&env.slist, av[i++]);
-	while (env.slist)
-	{
-		ft_printf("value: %s; id = %u\n", env.slist->value, env.slist->id);
-		env.slist = env.slist->next;
-	}
-	sleep(5);
+	ft_print_list(slist);
+	main_loop(slist);
 	ft_init_terminal(0);
 }
