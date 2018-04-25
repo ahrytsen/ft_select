@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 15:44:52 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/24 20:03:06 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/04/25 16:10:24 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void		ft_init_termcap(void)
 	g_term.auto_wrap = tgetflag("am");
 	g_term.height = tgetnum("li");
 	g_term.width = tgetnum("co");
-	termtype = tgetstr("pc", NULL);
 }
 
 void		ft_init_terminal(int mod)
@@ -79,8 +78,8 @@ void		ft_init_terminal(int mod)
 		ft_fatal("ft_select: fd isn't valid terminal type device.\n");
 	if (!mod)
 	{
-		tputs(tgetstr("ve", NULL), 1, (int (*)(int))&ft_putchar);
-		tputs(tgetstr("te", NULL), 1, (int (*)(int))&ft_putchar);
+		tputs(tgetstr("ve", NULL), 1, term_print);
+		tputs(tgetstr("te", NULL), 1, term_print);
 		tty = savetty;
 	}
 	else if (mod == 1)
@@ -92,8 +91,8 @@ void		ft_init_terminal(int mod)
 		tty.c_cc[VTIME] = 0;
 	}
 	mod ? ft_init_signal() : 0;
-	mod ? tputs(tgetstr("vi", NULL), 1, (int (*)(int))&ft_putchar) : 0;
-	mod ? tputs(tgetstr("ti", NULL), 1, (int (*)(int))&ft_putchar) : 0;
+	mod ? tputs(tgetstr("vi", NULL), 1, term_print) : 0;
+	mod ? tputs(tgetstr("ti", NULL), 1, term_print) : 0;
 	tcsetattr(0, TCSAFLUSH, &tty);
 }
 

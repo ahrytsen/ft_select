@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 18:05:23 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/24 19:57:50 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/04/25 14:13:39 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,10 @@ void	slist_add(t_select **head, t_select *new)
 		new->next = *head;
 		(*head)->prev->next = new;
 		(*head)->prev = new;
-		new->id = new->prev->id + 1;
 	}
 }
 
-void	slist_del(t_select **elem)
+void	slist_del(t_select *head, t_select **elem)
 {
 	t_select	*next;
 	t_select	*prev;
@@ -41,7 +40,12 @@ void	slist_del(t_select **elem)
 	next = (*elem)->next;
 	prev = (*elem)->prev;
 	free(*elem);
+	if (*elem == next)
+	{
+		*elem = NULL;
+		return ;
+	}
 	prev->next = next;
 	next->prev = prev;
-	*elem = next->id ? next : prev;
+	*elem = next == head ? prev : next;
 }

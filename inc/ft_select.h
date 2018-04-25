@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 18:28:54 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/24 21:21:51 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/04/25 16:08:24 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@
 
 typedef struct	s_select
 {
-	int				id;
 	uint8_t			is_slctd;
 	uint8_t			is_cur;
 	char			*value;
@@ -63,13 +62,14 @@ typedef struct	s_term
 
 extern t_term	g_term;
 
+int				term_print(int c);
 void			slist_add(t_select **head, t_select *new);
-void			slist_del(t_select **elem);
+void			slist_del(t_select *head, t_select **elem);
 void			ft_init_termcap(void);
 void			ft_init_terminal(int mod);
-void			ft_print_list(t_select *slist);
+void			ft_print_list(t_select *slist, t_select *cur);
 int				check_size(t_select *slist);
 t_select		*ft_init_slist(int ac, char **av);
-void			ft_move(uint64_t buf, t_select **cur);
+void			ft_move(t_select *head, t_select **cur, uint64_t buf);
 
 #endif
