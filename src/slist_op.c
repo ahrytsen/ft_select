@@ -6,46 +6,52 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 18:05:23 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/25 14:13:39 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/04/25 20:42:49 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_select.h>
 
-void	slist_add(t_select **head, t_select *new)
+void	slist_add(t_select *new)
 {
-	new->prev = new;
-	new->next = new;
-	if (!*head)
+	if (!g_term.slist_head)
 	{
-		new->is_cur = 1;
-		*head = new;
+		new->prev = new;
+		new->next = new;
+		g_term.slist_head = new;
 	}
 	else
 	{
-		new->prev = (*head)->prev;
-		new->next = *head;
-		(*head)->prev->next = new;
-		(*head)->prev = new;
+		new->prev = g_term.slist_head->prev;
+		new->next = g_term.slist_head;
+		g_term.slist_head->prev->next = new;
+		g_term.slist_head->prev = new;
 	}
 }
 
-void	slist_del(t_select *head, t_select **elem)
+void	slist_del_cur(void)
 {
 	t_select	*next;
 	t_select	*prev;
 
-	if (!*elem)
+	if (!g_term.slist_cur)
 		return ;
-	next = (*elem)->next;
-	prev = (*elem)->prev;
-	free(*elem);
-	if (*elem == next)
+	next = g_term.slist_cur->next;
+	prev = g_term.slist_cur->prev;
+	free(g_term.slist_cur);
+	if (g_term.slist_cur == next)
 	{
-		*elem = NULL;
+		g_term.slist_cur = NULL;
+		g_term.slist_head = NULL;
 		return ;
 	}
 	prev->next = next;
 	next->prev = prev;
-	*elem = next == head ? prev : next;
+	if (g_term.slist_cur == g_term.slist_head)
+	{
+		g_term.slist_head = next;
+		g_term.slist_cur = next;
+	}
+	else
+		g_term.slist_cur = (next == g_term.slist_head) ? prev : next;
 }

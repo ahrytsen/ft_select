@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 18:28:54 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/25 16:08:24 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/04/26 20:11:31 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@
 # include <fcntl.h>
 # include <termios.h>
 
+/*
+**	KEY BINDINGS
+*/
 # define K_UP 0X415B1B
 # define K_DOWN 0X425B1B
 # define K_LEFT 0X445B1B
@@ -35,11 +38,23 @@
 # define K_DEL 0X4
 # define K_SPC 0X20
 # define K_RET 0XA
+# define K_ESC 0X1B
+
+/*
+**	KEY BINDINGS
+*/
+# define C_BLOCK_SP "\033[46m\033[34m"
+# define C_CHAR_SP "\033[43m\033[34m"
+# define C_DIR "\033[1;96m"
+# define C_PIPE "\033[33m"
+# define C_LINK "\033[35m"
+# define C_SOCKET "\033[32m"
+# define C_EXEC "\033[31m"
+# define C_EOC "\033[0m"
 
 typedef struct	s_select
 {
 	uint8_t			is_slctd;
-	uint8_t			is_cur;
 	char			*value;
 	int				len;
 	mode_t			st_mode;
@@ -50,26 +65,51 @@ typedef struct	s_select
 typedef struct	s_term
 {
 	uint8_t		too_small;
-	char		*cl_string;
-	char		*cm_string;
+	char		*clear;
+	char		*curmov;
+	char		*undln_on;
+	char		*undln_off;
+	char		*iv_on;
+	char		*iv_off;
 	int			height;
 	int			width;
-	int			auto_wrap;
-	char		PC;
-	char		*BC;
-	char		*UP;
+	t_select	*slist_cur;
+	t_select	*slist_head;
 }				t_term;
 
 extern t_term	g_term;
 
+/*
+**				ft_select.c
+*/
 int				term_print(int c);
-void			slist_add(t_select **head, t_select *new);
-void			slist_del(t_select *head, t_select **elem);
+/*
+**				slist_op.c
+*/
+void			slist_add(t_select *new);
+void			slist_del_cur(void);
+/*
+**				ft_init.c
+*/
 void			ft_init_termcap(void);
 void			ft_init_terminal(int mod);
-void			ft_print_list(t_select *slist, t_select *cur);
-int				check_size(t_select *slist);
-t_select		*ft_init_slist(int ac, char **av);
-void			ft_move(t_select *head, t_select **cur, uint64_t buf);
+int				ft_init_slist(int ac, char **av);
+/*
+**				ft_print_list.c
+*/
+void			ft_print_list(void);
+void			ft_check_size(void);
+/*
+**				ft_signal.c
+*/
+void			sig_handler(int sig);
+/*
+**				ft_action.c
+*/
+int				action_loop(void);
+/*
+**				ft_pretty_interface.c
+*/
+char			*ft_color(t_select *elem);
 
 #endif

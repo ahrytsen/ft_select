@@ -6,41 +6,41 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/24 17:34:30 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/25 16:10:33 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/04/26 19:35:23 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_select.h>
 
-void	ft_move(t_select *head, t_select **cur, uint64_t buf)
+static void	ft_too_small(void)
 {
-	int	i;
+	int					x;
+	int					y;
+	static const char	*msg = "Sorry, window is too small!";
+	static const int	msg_len = 27;
 
-	i = 0;
-	if (buf == K_UP || buf == K_DOWN)
-		*cur = buf == K_UP ? (*cur)->prev : (*cur)->next;
-	else if (buf == K_LEFT)
-		while (i++ != g_term.height && *cur != head)
-			*cur = (*cur)->prev;
-	else
-		while (i++ != g_term.height && (*cur)->next != head)
-			*cur = (*cur)->next;
+	x = (g_term.width / 2) - (msg_len / 2);
+	y = g_term.height / 2;
+	x < 0 ? x = 0 : 0;
+	tputs(g_term.clear, 1, term_print);
+	tputs(tgoto(g_term.curmov, x, y), 1, term_print);
+	ft_dprintf(0, "%s", msg);
 }
 
-int		check_size(t_select *slist)
+void		ft_check_size(void)
 {
 	int			i;
 	int			max_width;
 	int			width;
-	t_select	*st_p;
+	t_select	*slist;
 
 	i = 0;
 	width = 0;
 	max_width = 0;
-	st_p = slist;
+	slist = g_term.slist_head;
 	while (1)
 	{
-		if (++i == g_term.height || slist->next == st_p)
+		if (++i == g_term.height || slist->next == g_term.slist_head)
 		{
 			i = 0;
 			width += max_width + 3;
@@ -48,34 +48,41 @@ int		check_size(t_select *slist)
 		}
 		slist->len > max_width ? max_width = slist->len : 0;
 		slist = slist->next;
-		if (slist == st_p)
+		if (slist == g_term.slist_head)
 			break ;
 	}
-	return ((width >= g_term.width) ? 0 : 1);
+	g_term.too_small = (width >= g_term.width) ? 1 : 0;
 }
 
-void	ft_print_elem(t_select *slist, t_select *cur, int col, int row)
+static void	ft_print_elem(t_select *slist, int col, int row)
 {
-	tputs(tgoto(g_term.cm_string, col, row), 1, term_print);
-	slist == cur ? tputs(tgetstr("us", NULL), 1, term_print) : 0;
-	slist->is_slctd ? tputs(tgetstr("mr", NULL), 1, term_print) : 0;
-	ft_dprintf(0, "%s", slist->value);
-	slist == cur ? tputs(tgetstr("ue", NULL), 1, term_print) : 0;
-	slist->is_slctd ? tputs(tgetstr("me", NULL), 1, term_print) : 0;
+	char	*color;
+	char	p;
+	char	sl;
+
+	color = ft_color(slist);
+	p = slist == g_term.slist_cur ? '>' : ' ';
+	sl = slist->is_slctd ? '+' : ' ';
+	tputs(tgoto(g_term.curmov, col, row), 1, term_print);
+	slist == g_term.slist_cur ? tputs(g_term.undln_on, 1, term_print) : 0;
+	slist->is_slctd ? tputs(g_term.iv_on, 1, term_print) : 0;
+	ft_dprintf(0, "%c%c%s%s%s", p, sl, color,
+			slist->value, *color ? C_EOC : "");
+	slist == g_term.slist_cur ? tputs(g_term.undln_off, 1, term_print) : 0;
+	slist->is_slctd ? tputs(g_term.iv_off, 1, term_print) : 0;
 }
 
-void	ft_print_list(t_select *slist, t_select *cur)
+static void	ft_print_column(void)
 {
 	int			i;
 	int			col;
-	t_select	*st_p;
+	t_select	*slist;
 	int			max_width;
 
 	i = 0;
 	col = 0;
-	st_p = slist;
+	slist = g_term.slist_head;
 	max_width = 0;
-	tputs(g_term.cl_string, 1, term_print);
 	while (1)
 	{
 		if (i == g_term.height)
@@ -84,11 +91,16 @@ void	ft_print_list(t_select *slist, t_select *cur)
 			col += max_width + 3;
 			max_width = 0;
 		}
-		ft_print_elem(slist, cur, col, i);
+		ft_print_elem(slist, col, i);
 		slist->len > max_width ? max_width = slist->len : 0;
 		slist = slist->next;
 		i++;
-		if (slist == st_p)
+		if (slist == g_term.slist_head)
 			break ;
 	}
+}
+
+void		ft_print_list(void)
+{
+	g_term.too_small ? ft_too_small() : ft_print_column();
 }
