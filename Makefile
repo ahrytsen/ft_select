@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/04/27 15:58:09 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/04/27 19:00:10 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -70,7 +70,7 @@ re		:		fclean all
 .PHONY	:		all clean re
 
 $(DIROBJ):
-				@mkdir $(DIROBJ)
+				@mkdir -p $(DIROBJ)
 
 $(OBJ)	:		$(DIROBJ)%.o : $(DIRSRC)%.c $(HDR)
 				@$(CC) $(INCLUDE) $(CFLAGS) -O3 -o $@ -c $<
