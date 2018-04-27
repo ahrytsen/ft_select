@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/29 16:08:02 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/18 19:53:24 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/04/27 12:06:00 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,8 @@ int					ft_dprintf(int fd, const char *format, ...)
 	return (ft_print_buf(fd, pbuf[1], pbuf[0]));
 }
 
-void				ft_fatal(const char *format, ...)
+void				ft_fatal(int st, void (*exit_f)(int),
+							const char *format, ...)
 {
 	t_arg		arg;
 	va_list		ap;
@@ -174,7 +175,7 @@ void				ft_fatal(const char *format, ...)
 			ft_putchar_buf(&pbuf[1], *format++);
 	format ? va_end(ap) : 0;
 	ft_print_buf(2, pbuf[1], pbuf[0]);
-	exit(1);
+	exit_f(st);
 }
 /*
 **int					ft_asprintf(char *str, const char *format, ...)

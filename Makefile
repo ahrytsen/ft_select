@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/04/26 19:12:06 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/04/27 15:58:09 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -18,7 +18,7 @@ SUB_MAKE	=	./libft/
 SUB_OBJ		=	libftprintf.a
 INC_LIB		=	-L./libft -lftprintf -ltermcap
 SRC			=	ft_select.c slist_op.c ft_init.c ft_print_list.c ft_signal.c\
-				ft_pretty_interface.c ft_action.c
+				ft_pretty_interface.c ft_action.c ft_search.c
 HDR			=	inc/ft_select.h
 LIBFT		=	libft/libftprintf.a
 OBJ			=	$(addprefix $(DIROBJ), $(SRC:.c=.o))

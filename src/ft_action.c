@@ -6,11 +6,17 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/26 19:10:51 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/26 19:57:35 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/04/27 16:54:42 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_select.h>
+
+void		ft_exit(int st)
+{
+	ft_init_terminal(0);
+	exit(st);
+}
 
 static void	ft_select(int mod)
 {
@@ -50,8 +56,8 @@ static int	action_loop_helper(uint64_t buf)
 		ft_select(1);
 	else if (buf == 'A' && !g_term.too_small)
 		ft_select(0);
-	else if (buf == 'f' && !g_term.too_small)
-		(void)buf;
+	else if (buf == K_SRCH && !g_term.too_small)
+		ft_search();
 	else
 		return (1);
 	return (0);

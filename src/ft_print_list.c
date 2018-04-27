@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/24 17:34:30 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/26 19:35:23 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/04/27 16:30:36 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void		ft_check_size(void)
 	slist = g_term.slist_head;
 	while (1)
 	{
-		if (++i == g_term.height || slist->next == g_term.slist_head)
+		if (++i == g_term.height - 1 || slist->next == g_term.slist_head)
 		{
 			i = 0;
 			width += max_width + 3;
@@ -85,7 +85,7 @@ static void	ft_print_column(void)
 	max_width = 0;
 	while (1)
 	{
-		if (i == g_term.height)
+		if (i == g_term.height - 1)
 		{
 			i = 0;
 			col += max_width + 3;

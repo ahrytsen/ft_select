@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 18:28:54 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/26 20:11:31 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/04/27 16:54:33 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # define K_DEL 0X4
 # define K_SPC 0X20
 # define K_RET 0XA
+# define K_SRCH 0X6
 # define K_ESC 0X1B
 
 /*
@@ -77,6 +78,12 @@ typedef struct	s_term
 	t_select	*slist_head;
 }				t_term;
 
+typedef struct	s_sline
+{
+	char			ch[9];
+	struct s_sline	*next;
+}				t_sline;
+
 extern t_term	g_term;
 
 /*
@@ -107,9 +114,14 @@ void			sig_handler(int sig);
 **				ft_action.c
 */
 int				action_loop(void);
+void			ft_exit(int st);
 /*
 **				ft_pretty_interface.c
 */
 char			*ft_color(t_select *elem);
+/*
+**				ft_search.c
+*/
+void			ft_search(void);
 
 #endif

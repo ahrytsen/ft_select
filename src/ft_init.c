@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 15:44:52 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/25 21:07:42 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/04/27 12:12:56 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,13 @@ void		ft_init_termcap(void)
 	int		success;
 
 	if (!(termtype = getenv("TERM")))
-		ft_fatal("Specify a terminal type with `setenv TERM <yourtype>'.\n");
+		ft_fatal(1, exit,
+				"Specify a terminal type with `setenv TERM <yourtype>'.\n");
 	success = tgetent(NULL, termtype);
 	if (success < 0)
-		ft_fatal("Could not access the termcap data base.\n");
+		ft_fatal(1, exit, "Could not access the termcap data base.\n");
 	else if (!success)
-		ft_fatal("Terminal type `%s' is not defined.\n", termtype);
+		ft_fatal(1, exit, "Terminal type `%s' is not defined.\n", termtype);
 	g_term.clear = tgetstr("cl", NULL);
 	g_term.curmov = tgetstr("cm", NULL);
 	g_term.undln_on = tgetstr("us", NULL);
@@ -52,7 +53,7 @@ void		ft_init_terminal(int mod)
 	static struct termios	tty;
 
 	if (!isatty(0))
-		ft_fatal("ft_select: fd isn't valid terminal type device.\n");
+		ft_fatal(1, exit, "ft_select: fd isn't valid terminal type device.\n");
 	if (!mod)
 	{
 		tputs(tgetstr("ve", NULL), 1, term_print);
@@ -80,7 +81,7 @@ int			ft_init_slist(int ac, char **av)
 	while (--ac)
 	{
 		if (!(new = (t_select*)ft_memalloc(sizeof(t_select))))
-			ft_fatal("ft_select: malloc error\n");
+			ft_fatal(1, exit, "ft_select: malloc error\n");
 		new->value = *++av;
 		new->len = ft_strlen(new->value);
 		new->st_mode = stat(new->value, &buf) ? 0 : buf.st_mode;
