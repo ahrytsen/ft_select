@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/26 19:10:51 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/27 19:14:21 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/04/27 19:52:14 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ static void	ft_move(uint64_t buf)
 	else if (buf == K_DOWN)
 		g_term.slist_cur = g_term.slist_cur->next;
 	else if (buf == K_LEFT)
-		while (i++ != g_term.height - 1 && g_term.slist_cur != g_term.slist_head)
+		while (i++ != g_term.height - 1
+			&& g_term.slist_cur != g_term.slist_head)
 			g_term.slist_cur = g_term.slist_cur->prev;
 	else
 		while (i++ != g_term.height - 1
