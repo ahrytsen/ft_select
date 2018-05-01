@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 15:35:28 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/26 19:57:12 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/05/01 15:29:36 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int			main(int ac, char **av)
 		ft_usage();
 	ft_init_termcap();
 	ft_init_terminal(1);
-	ft_check_size();
+	ft_check_size(g_term.slist_head);
 	ft_print_list();
 	ret = action_loop();
 	ft_init_terminal(0);

@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 18:05:23 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/25 20:42:49 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/05/01 11:35:55 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	slist_add(t_select *new)
 		g_term.slist_head->prev->next = new;
 		g_term.slist_head->prev = new;
 	}
+	g_term.total++;
 }
 
 void	slist_del_cur(void)
@@ -54,4 +55,5 @@ void	slist_del_cur(void)
 	}
 	else
 		g_term.slist_cur = (next == g_term.slist_head) ? prev : next;
+	g_term.total--;
 }

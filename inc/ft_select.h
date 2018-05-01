@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 18:28:54 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/27 16:54:33 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/05/01 17:36:51 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@
 # define K_ESC 0X1B
 
 /*
-**	KEY BINDINGS
+**	FILE TYPES COLORS
 */
 # define C_BLOCK_SP "\033[46m\033[34m"
 # define C_CHAR_SP "\033[43m\033[34m"
@@ -66,12 +66,17 @@ typedef struct	s_select
 typedef struct	s_term
 {
 	uint8_t		too_small;
+	uint8_t		search;
+	char		*sline;
+	int			col_width;
 	char		*clear;
 	char		*curmov;
 	char		*undln_on;
 	char		*undln_off;
 	char		*iv_on;
 	char		*iv_off;
+	int			total;
+	int			selected;
 	int			height;
 	int			width;
 	t_select	*slist_cur;
@@ -105,7 +110,7 @@ int				ft_init_slist(int ac, char **av);
 **				ft_print_list.c
 */
 void			ft_print_list(void);
-void			ft_check_size(void);
+void			ft_check_size(t_select *slist);
 /*
 **				ft_signal.c
 */
@@ -119,6 +124,7 @@ void			ft_exit(int st);
 **				ft_pretty_interface.c
 */
 char			*ft_color(t_select *elem);
+void			ft_print_header(void);
 /*
 **				ft_search.c
 */

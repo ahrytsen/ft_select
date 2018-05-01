@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 21:02:41 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/26 19:36:42 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/05/01 16:17:04 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ static void	ft_winch(void)
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
 	g_term.height = w.ws_row;
 	g_term.width = w.ws_col;
-	ft_check_size();
-	g_term.too_small ? 0 : tputs(g_term.clear, 1, term_print);
+	ft_check_size(g_term.slist_head);
 	ft_print_list();
 }
 

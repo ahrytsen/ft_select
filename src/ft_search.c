@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/27 11:31:10 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/27 16:51:14 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/05/01 17:28:53 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,28 +93,28 @@ static void	sline_add(t_sline **sline, uint64_t ch)
 void		ft_search(void)
 {
 	t_sline		*line;
-	char		*ln;
 	uint64_t	buf;
+	int			b;
 
 	line = NULL;
-	ln = NULL;
-	tputs(tgoto(g_term.curmov, 0, g_term.height), 1, term_print);
-	ft_dprintf(0, "Search: ");
+	b = g_term.total > g_term.height ? g_term.height : g_term.total + 3;
+	tputs(tgoto(g_term.curmov, 0, b), 1, term_print);
+	ft_dprintf(0, "%sSearch: ", tgetstr("ce", NULL));
 	while (!(buf = 0) && read(0, &buf, 8) > 0 && buf != K_RET && buf != K_ESC)
 	{
-		tputs(tgoto(g_term.curmov, 0, g_term.height), 1, term_print);
-		ft_dprintf(0, "Search: %s", ln ? ln : "");
-		if (buf == 127 && sline_bs(&line))
-			ft_dprintf(0, "%c\033[0J", 8);
-		else if (buf == K_UP || buf == K_DOWN
+		tputs(tgoto(g_term.curmov, 0, b), 1, term_print);
+		ft_dprintf(0, "Search: %.*s",
+				g_term.width - 10, g_term.sline ? g_term.sline : "");
+		(buf == 127 && sline_bs(&line)) ? ft_dprintf(0, "%c\033[0J", 8) : 0;
+		if (buf == K_UP || buf == K_DOWN
 				|| buf == K_RIGHT || buf == K_LEFT)
 			ft_dprintf(0, "\a");
 		else if (buf != 127 && ft_dprintf(0, "%s", &buf) && buf > 31)
 			sline_add(&line, buf);
-		sline_tostr(line, &ln, 1);
-		search_slist(ln);
+		sline_tostr(line, &g_term.sline, 1);
+		search_slist(g_term.sline);
 	}
-	tputs(tgoto(g_term.curmov, 0, g_term.height), 1, term_print);
+	tputs(tgoto(g_term.curmov, 0, b), 1, term_print);
 	tputs(tgetstr("ce", NULL), 1, term_print);
-	sline_tostr(line, &ln, 0);
+	sline_tostr(line, &g_term.sline, 0);
 }
