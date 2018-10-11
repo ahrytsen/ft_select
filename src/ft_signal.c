@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 21:02:41 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/05/01 16:17:04 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/10/11 20:41:02 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	ft_susp(void)
 {
 	ft_init_terminal(0);
 	signal(SIGTSTP, SIG_DFL);
-	ioctl(STDERR_FILENO, TIOCSTI, "\x1A");
+	kill(0, SIGTSTP);
 }
 
 static void	ft_winch(void)
